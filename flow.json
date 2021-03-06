@@ -1,0 +1,160 @@
+[
+  {
+    "id": "a8a84b6c.d5e8e8",
+    "type": "tab",
+    "label": "Calibrator",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "a9a77476.72dc58",
+    "type": "mqtt in",
+    "z": "a8a84b6c.d5e8e8",
+    "name": "Calibrated Plug",
+    "topic": "tasmota/tele/calibrated-plug/SENSOR",
+    "qos": "0",
+    "datatype": "json",
+    "broker": "5155a270.29c60c",
+    "x": 120,
+    "y": 100,
+    "wires": [
+      [
+        "e6598481.79f388",
+        "862270fe.cfe64",
+        "e8de50e3.70e1f"
+      ]
+    ]
+  },
+  {
+    "id": "e6598481.79f388",
+    "type": "function",
+    "z": "a8a84b6c.d5e8e8",
+    "name": "CurrentSet Command",
+    "func": "return {\n    command: 'CurrentSet',\n    payload: parseFloat(msg.payload.ENERGY.Current),\n}\n",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 340,
+    "y": 140,
+    "wires": [
+      [
+        "13d17c3a.7bbee4"
+      ]
+    ]
+  },
+  {
+    "id": "862270fe.cfe64",
+    "type": "function",
+    "z": "a8a84b6c.d5e8e8",
+    "name": "PowerSet Command",
+    "func": "return {\n    command: 'PowerSet',\n    payload: parseFloat(msg.payload.ENERGY.Power),\n}\n",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 340,
+    "y": 60,
+    "wires": [
+      [
+        "13d17c3a.7bbee4"
+      ]
+    ]
+  },
+  {
+    "id": "e8de50e3.70e1f",
+    "type": "function",
+    "z": "a8a84b6c.d5e8e8",
+    "name": "VoltageSet Command",
+    "func": "return {\n    command: 'VoltageSet',\n    payload: parseFloat(msg.payload.ENERGY.Voltage),\n}\n",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 340,
+    "y": 100,
+    "wires": [
+      [
+        "13d17c3a.7bbee4"
+      ]
+    ]
+  },
+  {
+    "id": "900af71f.ef7508",
+    "type": "mqtt out",
+    "z": "a8a84b6c.d5e8e8",
+    "name": "New Plug",
+    "topic": "",
+    "qos": "",
+    "retain": "",
+    "broker": "5155a270.29c60c",
+    "x": 700,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "13d17c3a.7bbee4",
+    "type": "function",
+    "z": "a8a84b6c.d5e8e8",
+    "name": "Set topic",
+    "func": "const nameDevice = 'new-plug';\n\nmsg['topic'] = 'tasmota/cmnd/' + nameDevice + '/' + msg['command'];\n\nreturn msg;\n",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 540,
+    "y": 100,
+    "wires": [
+      [
+        "900af71f.ef7508"
+      ]
+    ]
+  },
+  {
+    "id": "aebf9358.ed1d4",
+    "type": "comment",
+    "z": "a8a84b6c.d5e8e8",
+    "name": "Info",
+    "info": "Plug pre-calibrated according to official Tasmota instructions: https://tasmota.github.io/docs/Power-Monitoring-Calibration/#calibration-procedure",
+    "x": 90,
+    "y": 60,
+    "wires": []
+  },
+  {
+    "id": "5155a270.29c60c",
+    "type": "mqtt-broker",
+    "z": "",
+    "name": "Example",
+    "broker": "mqtt.example.com",
+    "port": "8883",
+    "tls": "2b76baaa.da5ef6",
+    "clientid": "NodeRED",
+    "usetls": true,
+    "compatmode": false,
+    "keepalive": "60",
+    "cleansession": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthPayload": "",
+    "closeTopic": "",
+    "closeQos": "0",
+    "closePayload": "",
+    "willTopic": "",
+    "willQos": "0",
+    "willPayload": ""
+  },
+  {
+    "id": "2b76baaa.da5ef6",
+    "type": "tls-config",
+    "z": "",
+    "name": "Example",
+    "cert": "",
+    "key": "",
+    "ca": "",
+    "certname": "",
+    "keyname": "",
+    "caname": "",
+    "servername": "mqtt.example.com",
+    "verifyservercert": true
+  }
+]
